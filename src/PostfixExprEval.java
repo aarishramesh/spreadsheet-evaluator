@@ -16,8 +16,8 @@ import java.util.Stack;
  */
 public class PostfixExprEval {
 	public static void main(String[] args) {
-		String[] exprArr = {"9", "20", "20", "/", "*"};
-		
+		String expr = "7 --";
+		System.out.println(evaluate(expr));
 	}
 
 	public static float evaluate(String expr) {
@@ -27,9 +27,15 @@ public class PostfixExprEval {
 			if (isFloat(val)) {
 				operStack.add(val + "");
 			} else {
-				float num2 = Float.parseFloat(operStack.pop());
-				float num1 = Float.parseFloat(operStack.pop());
-				operStack.add((eval(num1, num2, val.charAt(0))) + "");
+				if (val.equals("++")) {
+					operStack.add((Float.parseFloat(operStack.pop()) + 1) + ""); 
+				} else if (val.equals("--")) {
+					operStack.add((Float.parseFloat(operStack.pop()) - 1) + "");
+				} else {
+					float num2 = Float.parseFloat(operStack.pop());
+					float num1 = Float.parseFloat(operStack.pop());
+					operStack.add((eval(num1, num2, val.charAt(0))) + "");
+				}
 			}
 		}
 		return Float.parseFloat(operStack.get(0));
